@@ -1,117 +1,133 @@
-import { config } from '@gluestack-ui/config';
-import { Box, GluestackUIProvider, Text } from '@gluestack-ui/themed';
+import 'react-native-gesture-handler';
+import React from 'react'; import { FormControl, FormControlLabel, FormControlLabelText, FormControlHelper, FormControlHelperText, FormControlError, FormControlErrorIcon, FormControlErrorText, Input, InputField, Radio, RadioGroup, RadioIcon, RadioIndicator, RadioLabel, Button, ButtonText, Checkbox, CheckboxGroup, CheckboxIndicator, CheckboxIcon, CheckboxLabel, Textarea, TextareaInput, SelectTrigger, SelectInput, SelectIcon, SelectPortal, SelectBackdrop, SelectContent, SelectDragIndicatorWrapper, SelectDragIndicator, SelectItem, Slider, SliderTrack, SliderFilledTrack, SliderThumb, Switch, Modal, ModalBackdrop, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter, HStack, Center, Icon, CircleIcon, CheckIcon, AlertCircleIcon, ChevronDownIcon } from '@gluestack-ui/themed';
+import { NavigationContainer, useNavigation } from '@react-navigation/native';
+import { useState } from 'react';
+import { Box, GluestackUIProvider, Text, Image, VStack, Link, Heading, Select } from '@gluestack-ui/themed';
 import { ScrollView } from 'react-native';
 import Gradient from './assets/Icons/Gradient';
 import DocumentData from './assets/Icons/DocumentData';
 import LightBulbPerson from './assets/Icons/LightbulbPerson';
 import Rocket from './assets/Icons/Rocket';
 import Logo from './assets/Icons/Logo';
+import { config } from './config/gluestack-ui.config';
+import BackGround from './components/background';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import Iphone from './components/Iphone';
+import Iphone2 from './components/Iphone2';
+
+//const Stack = createNativeStackNavigator();
+const Drawer = createDrawerNavigator();
 
 export default function App() {
-  return (
+  return <NavigationContainer>
     <GluestackUIProvider config={config}>
-      <Home />
-    </GluestackUIProvider>
-  );
+      <Drawer.Navigator initialRouteName="Home">
+        <Drawer.Screen name="Home" component={Home} />
+        <Drawer.Screen name="Notifications" component={Iphone} />
+      </Drawer.Navigator>
+    </GluestackUIProvider>;
+  </NavigationContainer>
 }
 
 const Home = () => {
-  return <Container />;
-};
-
-const FeatureCard = ({ iconSvg: IconSvg, name, desc }: any) => {
-  return (
-    <Box
-      flexDirection="column"
-      borderWidth={1}
-      borderColor="$borderDark700"
-      $web-flex={1}
-      m="$2"
-      p="$4"
-      rounded="$md"
-    >
-      <Box alignItems="center" display="flex" flexDirection="row">
-        {/* <Image source={iconSvg} alt="document" width={22} height={22} /> */}
-        <Text>
-          <IconSvg />
-        </Text>
-        <Text fontSize={22} color="$white" fontWeight="500" ml="$2">
-          {name}
-        </Text>
-      </Box>
-      <Text color="$textDark400" mt="$2">
-        {desc}
-      </Text>
-    </Box>
-  );
-};
+  return <Container/>
+}
 
 const Container = () => {
-  return (
-    <Box flex={1} backgroundColor="$black">
-      <ScrollView
-        style={{ height: '100%' }}
-        contentContainerStyle={{ flexGrow: 1 }}
-      >
-        <Box
-          position="absolute"
-          $base-h={500}
-          $base-w={500}
-          $lg-h={700}
-          $lg-w={700}
-        >
-          <Gradient />
-        </Box>
-        <Box
-          height="60%"
-          $base-my="$16"
-          $base-mx="$5"
-          $base-h="80%"
-          $lg-my="$24"
-          $lg-mx="$32"
-          justifyContent="space-between"
-          alignItems="center"
-        >
-          <Box
-            bg="#64748B33"
-            py="$2"
-            px="$6"
-            rounded="$full"
-            alignItems="center"
-            marginTop={20}
-            $base-flexDirection="column"
-            $sm-flexDirection="row"
-            $md-alignSelf="flex-start"
-          >
-            <Text color="$white" fontWeight="$normal">
-              Get started by editing
-            </Text>
-            <Text color="$white" fontWeight="$medium" ml="$2">
-              App.tsx
-            </Text>
-          </Box>
-          <Box justifyContent="center" alignItems="center">
-            <Logo />
-          </Box>
-          <Box $base-flexDirection="column" $md-flexDirection="row">
-            <FeatureCard
-              iconSvg={DocumentData}
-              name="Docs"
-              desc="Find in-depth information about gluestack features and API."
-            />
-            <FeatureCard
-              iconSvg={LightBulbPerson}
-              name="Learn"
-              desc="Learn about gluestack in an interactive course with quizzes!"
-            />
-            <FeatureCard
-              iconSvg={Rocket}
-              name="Deploy"
-              desc="Instantly drop your gluestack site to a shareable URL with vercel."
-            />
-          </Box>
-        </Box>
-      </ScrollView>
+  const navigation = useNavigation();
+  const [formData, setData] = React.useState({});
+  const [errors, setErrors] = React.useState({});
+
+  let regex_email = /[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)@[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)[.][a-zA-Z]{2,5}$/;
+  const digit = /[0-9]/;
+  const upperCase = /[A-Z]/;
+  const lowerCase = /[a-z]/;
+  const nonAlphanumeric = /[^0-9A-Za-z]/;
+  const isStrongPassword = password => [digit, upperCase, lowerCase, nonAlphanumeric].every(re => re.test(password)) && password.length >= 8 && password.length <= 32;
+  const validate = () => {
+    setErrors({});
+    console.log('email', formData.email);
+    console.log('password', formData.password);
+    if (regex_email.test(formData.email) != false) {
+      console.log('regex_email', formData.email);
+      setErrors({
+        ...errors,
+        email: 'Email.is not valid'
+      });
+      return false;
+    }
+    if (!isStrongPassword(formData.password)) {
+      setErrors({
+        ...errors,
+        password: 'Password is not valid'
+      });
+      return false;
+    }
+    return true;
+  };
+  const onSubmit = () => {
+    validate() ? navigation.navigate('Iphone') : console.log('Validation Failed', errors);
+  };
+  return <VStack>
+    <Box>
+      <FormControl isInvalid={false} size={"md"} isDisabled={false} isRequired={true}>
+        <FormControlLabel>
+          <FormControlLabelText>Email</FormControlLabelText>
+        </FormControlLabel>
+        <Input>
+          <InputField type="text" defaultValue="oscar@gmail.com" placeholder="email" onChangeText={value => setData({
+            ...formData,
+            email: value
+          })} />
+        </Input>
+
+        <FormControlHelper>
+          <FormControlHelperText>
+            Must be atleast @ character.
+          </FormControlHelperText>
+        </FormControlHelper>
+
+        <FormControlError>
+          <FormControlErrorIcon as={AlertCircleIcon} />
+          <FormControlErrorText>
+            Email invalid.
+          </FormControlErrorText>
+        </FormControlError>
+      </FormControl>
+
+      <FormControl isInvalid={false} size={"md"} isDisabled={false} isRequired={true}>
+        <FormControlLabel>
+          <FormControlLabelText>Password</FormControlLabelText>
+        </FormControlLabel>
+        <Input>
+          <InputField type="password" defaultValue="Oscar2110_abcd" placeholder="password" onChangeText={value => setData({
+            ...formData,
+            password: value
+          })} />
+        </Input>
+
+        <FormControlHelper>
+          <FormControlHelperText>
+            Must be atleast 6 characters.
+          </FormControlHelperText>
+        </FormControlHelper>
+
+        <FormControlError>
+          <FormControlErrorIcon as={AlertCircleIcon} />
+          <FormControlErrorText>
+            Atleast 6 characters are required.
+          </FormControlErrorText>
+        </FormControlError>
+      </FormControl>
     </Box>
-  );
+
+    <Button action={"primary"} variant={"solid"} size={"lg"}
+      isDisabled={false} bg="$blue" onPress={onSubmit}>
+      <ButtonText>
+        Button
+      </ButtonText>
+    </Button>
+
+  </VStack>;
 };
