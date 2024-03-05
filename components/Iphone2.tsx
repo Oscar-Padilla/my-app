@@ -8,7 +8,7 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 
 const Button1 = () => {
     const navigation = useNavigation();
-    return <Button onPress={() => navigation.navigate('Notifications')}>
+    return <Button action={"primary"} variant={"solid"} size={"lg"} isDisabled={false}>
         <ButtonText>
             Button 1
         </ButtonText>
@@ -17,7 +17,7 @@ const Button1 = () => {
 
 const Button2 = () => {
     const navigation = useNavigation();
-    return <Button onPress={() => navigation.goBack()}>
+    return <Button action={"primary"} variant={"solid"} size={"lg"} isDisabled={false}>
         <ButtonText>
             Button 2
         </ButtonText>
@@ -28,8 +28,8 @@ const Drawer = createDrawerNavigator();
 
 const Iphone2 = () => {
     return <Drawer.Navigator initialRouteName="Home">
-        <Drawer.Screen name="Home" component={Button2} />
-        <Drawer.Screen name="Notifications" component={Button1} />
+        <Drawer.Screen name="Home" component={Button1} />
+        <Drawer.Screen name="Notifications" component={Button2} />
       </Drawer.Navigator>
 };
 export default Iphone2;

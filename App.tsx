@@ -67,7 +67,7 @@ const Container = () => {
     return true;
   };
   const onSubmit = () => {
-    validate() ? navigation.navigate('Iphone') : console.log('Validation Failed', errors);
+    validate() ? navigation.navigate('Iphone2') : console.log('Validation Failed', errors);
   };
   return <VStack>
     <Box>
