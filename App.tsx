@@ -15,6 +15,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import Iphone from './components/Iphone';
 import Iphone2 from './components/Iphone2';
+import Cardscreen from './components/CardScreen';
 
 //const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -45,6 +46,8 @@ const Container = () => {
   const lowerCase = /[a-z]/;
   const nonAlphanumeric = /[^0-9A-Za-z]/;
   const isStrongPassword = password => [digit, upperCase, lowerCase, nonAlphanumeric].every(re => re.test(password)) && password.length >= 8 && password.length <= 32;
+  
+  
   const validate = () => {
     setErrors({});
     console.log('email', formData.email);
@@ -66,8 +69,34 @@ const Container = () => {
     }
     return true;
   };
+
+  const post_Jsonplaceholder = async () => {
+    try {
+      const response = await fetch('https://jsonplaceholder.typicode.com/posts', {
+        method: 'POST',
+        body: JSON.stringify({
+          title: 'foo',
+          body: 'bar',
+          userId: 1,
+        }),
+        headers: {
+          'Content-type': 'application/json; charset=UTF-8',
+        },
+      })
+        .then((response) => response.json())
+        .then((json) => console.log(json));
+      
+    } catch (error){
+      console.error(error);
+    }
+    console.log(response);
+  };
+
   const onSubmit = () => {
-    validate() ? navigation.navigate('Iphone2') : console.log('Validation Failed', errors);
+    validate() ? navigation.navigate('Cardscreen') : console.log('Validation Failed', errors);
+    // navigation.navigate('Iphone2') :
+    // post_Jsonplaceholder() :
+     
   };
   return <VStack>
     <Box>
