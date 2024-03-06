@@ -24,7 +24,7 @@ const CardScreen = () => {
         getJsonPlaceholder();
     }, []);
 
-    return <Box>
+    return <Box p="$10">
         <Heading fontSize="xl" p="4" pb="3">
             Inbox
         </Heading>
@@ -37,7 +37,7 @@ const CardScreen = () => {
                 <HStack space={[2, 3]} justifyContent="space-between">
                     <Avatar size="48px" source={{
                         uri: item.id
-                    }} />
+                    }}/>
                     <VStack>
                         <Text _dark={{
                             color: "warmGray.50"
@@ -50,7 +50,6 @@ const CardScreen = () => {
                             {item.body}
                         </Text>
                     </VStack>
-                    <Spacer />
                     <Text fontSize="xs" _dark={{
                         color: "warmGray.50"
                     }} color="coolGray.800" alignSelf="flex-start">

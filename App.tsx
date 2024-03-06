@@ -15,7 +15,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import Iphone from './components/Iphone';
 import Iphone2 from './components/Iphone2';
-import Cardscreen from './components/CardScreen';
+import CardScreen from './components/CardScreen';
 
 //const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -25,7 +25,8 @@ export default function App() {
     <GluestackUIProvider config={config}>
       <Drawer.Navigator initialRouteName="Home">
         <Drawer.Screen name="Home" component={Home} />
-        <Drawer.Screen name="Notifications" component={Iphone} />
+        <Drawer.Screen name="Notifications" component={Iphone2} />
+        <Drawer.Screen name="CardScreen" component={CardScreen} />
       </Drawer.Navigator>
     </GluestackUIProvider>;
   </NavigationContainer>
@@ -93,7 +94,7 @@ const Container = () => {
   };
 
   const onSubmit = () => {
-    validate() ? navigation.navigate('Cardscreen') : console.log('Validation Failed', errors);
+    validate() ? navigation.navigate('CardScreen') : console.log('Validation Failed', errors);
     // navigation.navigate('Iphone2') :
     // post_Jsonplaceholder() :
      
